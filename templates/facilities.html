@@ -1,0 +1,91 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<h2 class="mb-4">Facilities Management</h2>
+
+<div class="card p-4 shadow-sm mb-4">
+
+<h5 class="mb-3">Add Facility</h5>
+
+<form method="POST" action="/add_facility">
+
+<div class="row g-3">
+
+<div class="col-md-4">
+<input type="text" name="name" class="form-control" placeholder="Facility Name" required>
+</div>
+
+<div class="col-md-3">
+<input type="text" name="fees" class="form-control" placeholder="Fees">
+</div>
+
+<div class="col-md-3">
+<input type="text" name="duration" class="form-control" placeholder="Duration">
+</div>
+
+<div class="col-md-2">
+<button type="submit" class="btn btn-primary w-100">
+Add Facility
+</button>
+</div>
+
+</div>
+
+</form>
+
+</div>
+
+
+<div class="card p-4 shadow-sm">
+
+<h5 class="mb-3">Facility List</h5>
+
+<table class="table table-striped table-hover">
+
+<thead class="table-dark">
+
+<tr>
+<th>ID</th>
+<th>Name</th>
+<th>Fees</th>
+<th>Duration</th>
+<th>Action</th>
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for facility in facilities %}
+
+<tr>
+
+<td>{{ facility.id }}</td>
+<td>{{ facility.name }}</td>
+<td>{{ facility.fees }}</td>
+<td>{{ facility.duration }}</td>
+
+<td>
+
+<a href="/edit_facility/{{ facility.id }}" class="btn btn-sm btn-warning">
+Edit
+</a>
+
+<a href="/delete_facility/{{ facility.id }}" class="btn btn-sm btn-danger">
+Delete
+</a>
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+{% endblock %}

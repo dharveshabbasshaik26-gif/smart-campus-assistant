@@ -1,0 +1,81 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<style>
+
+.dashboard-title{
+font-weight:600;
+margin-bottom:30px;
+}
+
+.dashboard-card{
+border:none;
+border-radius:14px;
+padding:25px;
+transition:0.3s;
+background:white;
+box-shadow:0 6px 18px rgba(0,0,0,0.08);
+}
+
+.dashboard-card:hover{
+transform:translateY(-6px);
+box-shadow:0 12px 25px rgba(0,0,0,0.15);
+}
+
+.dashboard-icon{
+font-size:38px;
+margin-bottom:10px;
+}
+
+.dashboard-number{
+font-size:32px;
+font-weight:700;
+color:#0d6efd;
+}
+
+</style>
+
+<h2 class="dashboard-title">Admin Dashboard</h2>
+
+<div class="row g-4">
+
+<div class="col-md-3">
+<div class="dashboard-card text-center">
+<div class="dashboard-icon">📚</div>
+<h5>Courses</h5>
+<div class="dashboard-number">{{ total_courses }}</div>
+<p class="text-muted">Total courses available</p>
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="dashboard-card text-center">
+<div class="dashboard-icon">🏢</div>
+<h5>Facilities</h5>
+<div class="dashboard-number">{{ total_facilities }}</div>
+<p class="text-muted">Total campus facilities</p>
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="dashboard-card text-center">
+<div class="dashboard-icon">🎓</div>
+<h5>Students</h5>
+<div class="dashboard-number">{{ total_students }}</div>
+<p class="text-muted">Registered students</p>
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="dashboard-card text-center">
+<div class="dashboard-icon">🤖</div>
+<h5>Knowledge Base</h5>
+<div class="dashboard-number">{{ total_kb }}</div>
+<p class="text-muted">Chatbot Q&A entries</p>
+</div>
+</div>
+
+</div>
+
+{% endblock %}

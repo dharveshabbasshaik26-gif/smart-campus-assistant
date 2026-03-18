@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<h2>Edit Facility</h2>
+
+<div class="card p-4 shadow-sm">
+
+<form method="POST" action="/update_facility/{{ facility.id }}">
+
+<div class="mb-3">
+<label class="form-label">Facility Name</label>
+<input type="text" name="name" class="form-control" value="{{ facility.name }}" required>
+</div>
+
+<div class="mb-3">
+<label class="form-label">Fees</label>
+<input type="text" name="fees" class="form-control" value="{{ facility.fees }}">
+</div>
+
+<div class="mb-3">
+<label class="form-label">Duration</label>
+<input type="text" name="duration" class="form-control" value="{{ facility.duration }}">
+</div>
+
+<button type="submit" class="btn btn-primary">
+Update Facility
+</button>
+
+<a href="/dashboard/facilities" class="btn btn-secondary">
+Cancel
+</a>
+
+</form>
+
+</div>
+
+{% endblock %}

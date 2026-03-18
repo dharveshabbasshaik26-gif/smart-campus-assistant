@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>Smart Campus Assistant</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+
+body{
+margin:0;
+font-family:Arial;
+background:white;
+display:flex;
+flex-direction:column;
+height:100vh;
+}
+
+/* Chat header */
+
+.chat-header{
+background:#0d6efd;
+color:white;
+padding:10px;
+display:flex;
+align-items:center;
+font-weight:bold;
+}
+
+/* Chat box */
+
+.chat-box{
+flex:1;
+overflow-y:auto;
+padding:10px;
+background:#fafafa;
+}
+
+/* user message */
+
+.user{
+text-align:right;
+margin:10px;
+}
+
+.user span{
+background:#0d6efd;
+color:white;
+padding:8px 12px;
+border-radius:15px;
+display:inline-block;
+}
+
+/* bot message */
+
+.bot{
+text-align:left;
+margin:10px;
+display:flex;
+align-items:center;
+}
+
+.bot span{
+background:#e9ecef;
+padding:8px 12px;
+border-radius:15px;
+display:inline-block;
+}
+
+/* input area */
+
+.input-area{
+display:flex;
+padding:10px;
+border-top:1px solid #ddd;
+}
+
+.input-area input{
+flex:1;
+margin-right:5px;
+}
+
+/* suggestions */
+
+.suggestions{
+padding:10px;
+text-align:center;
+border-top:1px solid #eee;
+}
+
+.suggestions button{
+margin:3px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- Chat Header -->
+
+<div class="chat-header">
+<img src="/static/images/chatbot.png" width="28" style="margin-right:8px">
+Smart Campus Assistant
+</div>
+
+<!-- Chat Messages -->
+
+<div id="chatBox" class="chat-box"></div>
+
+<!-- Input -->
+
+<div class="input-area">
+<input type="text" id="message" class="form-control" placeholder="Ask something...">
+<button class="btn btn-primary" onclick="sendMessage()">Send</button>
+</div>
+
+<!-- Suggestions -->
+
+<div id="suggestions" class="suggestions"></div>
+
+<script>
+
+/* ---------- ON LOAD ---------- */
+
+window.onload=function(){
+
+let chatBox=document.getElementById("chatBox");
+
+/* Welcome message */
+chatBox.innerHTML+=`
+<div class="bot">
+<img src="/static/images/chatbot.png" width="25" style="margin-right:5px">
+<span>Hello! 👋 You can ask me about courses or campus facilities.</span>
+</div>
+`;
+
+/* 🔥 Fetch initial suggestions from backend */
+fetch("/chat",{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify({message:"hi"})
+})
+.then(res=>res.json())
+.then(data=>{
+
+updateSuggestions(data.suggestions);
+
+});
+
+}
+
+
+/* ---------- SEND MESSAGE ---------- */
+
+function sendMessage(){
+
+let message=document.getElementById("message").value;
+
+if(message==="") return;
+
+let chatBox=document.getElementById("chatBox");
+
+/* user message */
+chatBox.innerHTML+=`<div class="user"><span>${message}</span></div>`;
+
+document.getElementById("message").value="";
+
+fetch("/chat",{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify({message:message})
+})
+.then(res=>res.json())
+.then(data=>{
+
+/* bot reply */
+chatBox.innerHTML+=`
+<div class="bot">
+<img src="/static/images/chatbot.png" width="25" style="margin-right:5px">
+<span>${data.reply}</span>
+</div>
+`;
+
+chatBox.scrollTop=chatBox.scrollHeight;
+
+/* update suggestions */
+updateSuggestions(data.suggestions);
+
+});
+
+}
+
+
+/* ---------- UPDATE SUGGESTIONS ---------- */
+
+function updateSuggestions(suggestions){
+
+let sugBox=document.getElementById("suggestions");
+
+sugBox.innerHTML="";
+
+if(!suggestions) return;
+
+suggestions.forEach(s=>{
+
+let btn=document.createElement("button");
+
+btn.className="btn btn-outline-primary btn-sm";
+btn.innerText=s;
+
+btn.onclick=function(){
+sendSuggestion(s);
+};
+
+sugBox.appendChild(btn);
+
+});
+
+}
+
+
+/* ---------- CLICK SUGGESTION ---------- */
+
+function sendSuggestion(text){
+
+document.getElementById("message").value=text;
+
+sendMessage();
+
+}
+
+
+/* ---------- ENTER KEY ---------- */
+
+document.getElementById("message").addEventListener("keypress",function(e){
+
+if(e.key==="Enter"){
+sendMessage();
+}
+
+});
+
+</script>
+
+</body>
+
+</html>

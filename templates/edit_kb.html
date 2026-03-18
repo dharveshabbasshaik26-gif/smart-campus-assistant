@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<h2 class="mb-4">Edit Knowledge Base Entry</h2>
+
+<div class="card shadow-sm p-4">
+
+<form method="POST" action="/update_kb/{{ entry.id }}">
+
+<div class="mb-3">
+<label class="form-label">Question</label>
+<input 
+type="text" 
+name="question" 
+class="form-control"
+value="{{ entry.question }}"
+required>
+</div>
+
+<div class="mb-3">
+<label class="form-label">Answer</label>
+<textarea 
+name="answer"
+class="form-control"
+rows="4"
+required>{{ entry.answer }}</textarea>
+</div>
+
+<button type="submit" class="btn btn-primary">
+Update Entry
+</button>
+
+<a href="/dashboard/knowledge_base" class="btn btn-secondary">
+Cancel
+</a>
+
+</form>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,1 @@
+web: gunicorn Smart_Campus_Assistant.app:app
